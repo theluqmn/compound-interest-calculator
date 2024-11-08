@@ -16,8 +16,9 @@ func main() {
 	myApp := app.New()
 	myWindow := myApp.NewWindow("Entry Widget")
 	myWindow.Resize(fyne.NewSize(400, 300))
-
+	
 	title := widget.NewLabelWithStyle("Compound Interest Calculator", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
+	status := widget.NewLabelWithStyle("Awaiting inputs", fyne.TextAlignLeading, fyne.TextStyle{Bold: false})
 
 	principalEntry := widget.NewEntry()
 	principalEntry.SetPlaceHolder("Principal amount")
@@ -86,11 +87,13 @@ func main() {
 			timesCompoundEntry,
 			yearsEntry,
 		),
+		status,
 		widget.NewButton("Calculate", func() {
 			log.Println("Content was:", principalEntry.Text)
 		}),
 		result,
 		layout.NewSpacer(),
+		widget.NewRichTextFromMarkdown("Created by [theluqmn](https://theluqmn.github.io) using Go [Fyne](https://fyne.io). [Source code](https://github.com/theluqmn/compound-interest-calculator)"),
 	)
 
 	myWindow.SetContent(content)
