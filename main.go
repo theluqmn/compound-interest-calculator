@@ -8,13 +8,14 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
-	// "fyne.io/fyne/v2/layout"
 )
 
 func main() {
 	myApp := app.New()
 	myWindow := myApp.NewWindow("Entry Widget")
+	myWindow.Resize(fyne.NewSize(400, 300))
 
 	title := widget.NewLabelWithStyle("Compound Interest Calculator", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
 
@@ -61,6 +62,20 @@ func main() {
 		}
 		return nil
 	}
+
+	result := container.NewGridWithRows(
+		2,
+		container.NewGridWithColumns(
+			2,
+			widget.NewLabelWithStyle("Total returns", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
+			widget.NewLabelWithStyle("N/A", fyne.TextAlignTrailing, fyne.TextStyle{Bold: false}),
+		),
+		container.NewGridWithColumns(
+			2,
+			widget.NewLabelWithStyle("Total interest", fyne.TextAlignLeading, fyne.TextStyle{Bold: true}),
+			widget.NewLabelWithStyle("N/A", fyne.TextAlignTrailing, fyne.TextStyle{Bold: false}),
+		),
+	)
 	
 	content := container.NewVBox(
 		title,
@@ -74,7 +89,8 @@ func main() {
 		widget.NewButton("Calculate", func() {
 			log.Println("Content was:", principalEntry.Text)
 		}),
-		
+		result,
+		layout.NewSpacer(),
 	)
 
 	myWindow.SetContent(content)
