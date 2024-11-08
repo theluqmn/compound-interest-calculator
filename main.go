@@ -1,3 +1,4 @@
+// Project repository: https://github.com/theluqmn/compound-interest-calculator
 package main
 
 import (
@@ -15,13 +16,16 @@ import (
 )
 
 func main() {
+	// Initialize Fyne app and window
 	myApp := app.New()
 	myWindow := myApp.NewWindow("Compound Interest Calculator")
 	myWindow.Resize(fyne.NewSize(500, 400))
 	
+	// Create title and status labels
 	title := widget.NewLabelWithStyle("Compound Interest Calculator", fyne.TextAlignCenter, fyne.TextStyle{Bold: true})
 	status := widget.NewLabelWithStyle("Awaiting inputs", fyne.TextAlignLeading, fyne.TextStyle{Bold: false})
 
+	// Create input fields
 	principalEntry := widget.NewEntry()
 	principalEntry.SetPlaceHolder("Principal amount")
 	principalEntry.Validator = func(s string) error {
@@ -70,6 +74,7 @@ func main() {
 	totalReturnsLabel := widget.NewLabelWithStyle("N/A", fyne.TextAlignTrailing, fyne.TextStyle{Bold: false})
 	totalInterestLabel := widget.NewLabelWithStyle("N/A", fyne.TextAlignTrailing, fyne.TextStyle{Bold: false})
 
+	// Result container (shows output of the CompoundInterest function)
 	result := container.NewGridWithRows(
 		2,
 		container.NewGridWithColumns(
@@ -84,6 +89,7 @@ func main() {
 		),
 	)
 	
+	// Main content container
 	content := container.NewVBox(
 		title,
 		principalEntry,
@@ -117,26 +123,30 @@ func main() {
 				return
 			}
 
+			// Calculate compound interest
 			total, interest, err := CompoundInterest(principal, rate, int(timesCompound), int(years))
 			if err != nil {
 				status.SetText(err.Error())
 				return
 			}
+
+			// Update result labels
 			totalReturnsLabel.SetText(fmt.Sprintf("%.2f", total))
 			totalInterestLabel.SetText(fmt.Sprintf("%.2f", interest))
 			status.SetText("Calculated")
-
 		}),
 		result,
 		layout.NewSpacer(),
 		widget.NewRichTextFromMarkdown("Created by [theluqmn](https://theluqmn.github.io) using Go [Fyne](https://fyne.io). [Source code](https://github.com/theluqmn/compound-interest-calculator)"),
 	)
 
+	// Set content and show window (runs the app)
 	myWindow.SetContent(content)
 	myWindow.ShowAndRun()
 	quit()
 }
 
+// Runs on program exit
 func quit() {
 	log.Println("Exiting program...")
 }
